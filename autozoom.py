@@ -49,11 +49,14 @@ exec(open('./models/pointcloud-inpainting.py', 'r').read())
 
 arguments_strIn = './images/doublestrike.jpg'
 arguments_strOut = './autozoom.mp4'
+arguments_intSeconds = 2
+arguments_intResolution = 1024
 
 for strOption, strArgument in getopt.getopt(sys.argv[1:], '', [ strParameter[2:] + '=' for strParameter in sys.argv[1::2] ])[0]:
     if strOption == '--in' and strArgument != '': arguments_strIn = strArgument # path to the input image
     if strOption == '--out' and strArgument != '': arguments_strOut = strArgument # path to where the output should be stored
-    if strOption == '--seconds' and strArgument != '': arguments_intSeconds = int(strArgument) # path to where the output should be stored
+    if strOption == '--seconds' and strArgument != '': arguments_intSeconds = int(strArgument)
+    if strOption == '--resolution' and strArgument != '': arguments_intResolution = int(strArgument)
 # end
 
 ##########################################################
@@ -66,8 +69,10 @@ if __name__ == '__main__':
 
     fltRatio = float(intWidth) / float(intHeight)
 
-    intWidth = min(int(1024 * fltRatio), 1024)
-    intHeight = min(int(1024 / fltRatio), 1024)
+    intWidth = min(int(arguments_intResolution * fltRatio), arguments_intResolution)
+    intWidth = int(intWidth/2)*2  # make sure it's an even number
+    intHeight = min(int(arguments_intResolution / fltRatio), arguments_intResolution)
+    intHeight = int(intHeight/2)*2  # make sure it's an even number
 
     npyImage = cv2.resize(src=npyImage, dsize=(intWidth, intHeight), fx=0.0, fy=0.0, interpolation=cv2.INTER_AREA)
 
