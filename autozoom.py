@@ -49,13 +49,13 @@ exec(open('./models/pointcloud-inpainting.py', 'r').read())
 
 arguments_strIn = './images/doublestrike.jpg'
 arguments_strOut = './autozoom.mp4'
-arguments_intSeconds = 2
+arguments_floatSeconds = 2.0
 arguments_intResolution = 1024
 
 for strOption, strArgument in getopt.getopt(sys.argv[1:], '', [ strParameter[2:] + '=' for strParameter in sys.argv[1::2] ])[0]:
     if strOption == '--in' and strArgument != '': arguments_strIn = strArgument # path to the input image
     if strOption == '--out' and strArgument != '': arguments_strOut = strArgument # path to where the output should be stored
-    if strOption == '--seconds' and strArgument != '': arguments_intSeconds = int(strArgument)
+    if strOption == '--seconds' and strArgument != '': arguments_floatSeconds = float(strArgument)
     if strOption == '--resolution' and strArgument != '': arguments_intResolution = int(strArgument)
 # end
 
@@ -92,7 +92,7 @@ if __name__ == '__main__':
     })
 
     fps = 30
-    num_frames = arguments_intSeconds * fps
+    num_frames = int(arguments_floatSeconds * fps)
     npyResult = process_kenburns({
         'fltSteps': numpy.linspace(0.0, 1.0, num_frames).tolist(),
         'objFrom': objFrom,
